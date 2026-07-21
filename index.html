@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CityFit Football | 曼城足球健身助手</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🏴󠁧󠁢󠁥󠁮󠁧󠁿 CityFit Football</h1>
+            <p class="subtitle">曼城足球健身助手 · Your Professional Football Fitness Assistant</p>
+        </header>
+
+        <nav class="tabs">
+            <button class="tab-btn active" data-tab="profile">👤 个人档案</button>
+            <button class="tab-btn" data-tab="analysis">📊 身体分析</button>
+            <button class="tab-btn" data-tab="plan">⚽ 训练计划</button>
+            <button class="tab-btn" data-tab="track">📈 训练追踪</button>
+        </nav>
+
+        <main>
+            <!-- 个人档案 -->
+            <section id="profile" class="tab-content active">
+                <h2>Player Profile · 个人档案</h2>
+
+                <div class="form-section">
+                    <h3>📁 Saved Profiles · 已保存档案</h3>
+                    <div id="saved-profiles-list">
+                        <div class="placeholder" style="padding: 20px;">
+                            暂无保存 · No saved profiles yet
+                        </div>
+                    </div>
+                    <div class="profile-actions" style="margin-top: 16px; display: flex; gap: 10px;">
+                        <button class="btn btn-primary" id="save-current-profile">
+                            💾 Save Current · 保存当前
+                        </button>
+                        <button class="btn" style="background: #ef4444; color: white;" id="clear-current-profile">
+                            🗑️ Clear Form · 清空表单
+                        </button>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3>📋 Basic Info · 基本信息</h3>
+                    <form id="basic-info-form">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="age">Age · 年龄</label>
+                                <input type="number" id="age" min="10" max="60" placeholder="请输入">
+                            </div>
+                            <div class="form-group">
+                                <label for="height">Height (cm) · 身高</label>
+                                <input type="number" id="height" min="100" max="250" placeholder="请输入">
+                            </div>
+                            <div class="form-group">
+                                <label for="weight">Weight (kg) · 体重</label>
+                                <input type="number" id="weight" min="30" max="150" step="0.5" placeholder="请输入">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="form-section">
+                    <h3>⚽ Football Info · 足球信息</h3>
+                    <form id="football-info-form">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="experience">Years Playing · 球龄（年）</label>
+                                <input type="number" id="experience" min="0" max="30" placeholder="请输入">
+                            </div>
+                            <div class="form-group">
+                                <label for="matches-week">Training/Matches · 每周训练/比赛次数</label>
+                                <input type="number" id="matches-week" min="0" max="14" placeholder="请输入">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Preferred Foot · 惯用脚</label>
+                            <div style="display: flex; gap: 10px; margin-top: 10px;">
+                                <label style="flex: 1; display: flex; align-items: center; gap: 8px; padding: 12px; background: white; border: 2px solid var(--border-color); border-radius: 10px; cursor: pointer; font-weight: 500;">
+                                    <input type="radio" name="preferred-foot" value="right" style="width: 18px; height: 18px; accent-color: var(--primary-color);">
+                                    <span>Right · 右脚</span>
+                                </label>
+                                <label style="flex: 1; display: flex; align-items: center; gap: 8px; padding: 12px; background: white; border: 2px solid var(--border-color); border-radius: 10px; cursor: pointer; font-weight: 500;">
+                                    <input type="radio" name="preferred-foot" value="left" style="width: 18px; height: 18px; accent-color: var(--primary-color);">
+                                    <span>Left · 左脚</span>
+                                </label>
+                                <label style="flex: 1; display: flex; align-items: center; gap: 8px; padding: 12px; background: white; border: 2px solid var(--border-color); border-radius: 10px; cursor: pointer; font-weight: 500;">
+                                    <input type="radio" name="preferred-foot" value="both" style="width: 18px; height: 18px; accent-color: var(--primary-color);">
+                                    <span>Both · 双脚</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Position(s) · 场上位置（可多选）</label>
+                            <div class="checkbox-group">
+                                <label><input type="checkbox" name="position" value="GK"> GK 门将</label>
+                                <label><input type="checkbox" name="position" value="CB"> CB 中后卫</label>
+                                <label><input type="checkbox" name="position" value="LB"> LB 左后卫</label>
+                                <label><input type="checkbox" name="position" value="RB"> RB 右后卫</label>
+                                <label><input type="checkbox" name="position" value="LWB"> LWB 左翼卫</label>
+                                <label><input type="checkbox" name="position" value="RWB"> RWB 右翼卫</label>
+                                <label><input type="checkbox" name="position" value="DM"> DM 防守中场</label>
+                                <label><input type="checkbox" name="position" value="CM"> CM 中场</label>
+                                <label><input type="checkbox" name="position" value="LM"> LM 左边前卫</label>
+                                <label><input type="checkbox" name="position" value="RM"> RM 右边前卫</label>
+                                <label><input type="checkbox" name="position" value="AM"> AM 攻击中场</label>
+                                <label><input type="checkbox" name="position" value="LW"> LW 左边锋</label>
+                                <label><input type="checkbox" name="position" value="RW"> RW 右边锋</label>
+                                <label><input type="checkbox" name="position" value="CF"> CF 中锋</label>
+                                <label><input type="checkbox" name="position" value="ST"> ST 射手</label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Strengths · 技术特点（可多选）</label>
+                            <div class="checkbox-group">
+                                <label><input type="checkbox" value="speed"> Pace · 速度</label>
+                                <label><input type="checkbox" value="acceleration"> Acceleration · 瞬间加速</label>
+                                <label><input type="checkbox" value="off-ball"> Off-ball movement · 无球跑动</label>
+                                <label><input type="checkbox" value="tackling"> Tackling · 抢断</label>
+                                <label><input type="checkbox" value="heading"> Heading · 头球</label>
+                                <label><input type="checkbox" value="passing"> Passing · 传球</label>
+                                <label><input type="checkbox" value="crossing"> Crossing · 传中</label>
+                                <label><input type="checkbox" value="shooting"> Shooting · 射门</label>
+                                <label><input type="checkbox" value="stamina"> Stamina · 耐力</label>
+                                <label><input type="checkbox" value="strength"> Strength · 对抗</label>
+                                <label><input type="checkbox" value="recovery-speed"> Recovery pace · 回追</label>
+                                <label><input type="checkbox" value="overlapping"> Overlapping · 插上</label>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="form-section">
+                    <h3>🏥 Health · 健康与伤病</h3>
+                    <form id="health-info-form">
+                        <div class="form-group">
+                            <label for="injury-history">Injury History · 受伤历史</label>
+                            <textarea id="injury-history" rows="2" placeholder="请描述你最近的伤病情况（可选）"></textarea>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="form-section">
+                    <h3>🎯 Skill Assessment · 技术自评（1-5级）</h3>
+                    <p style="color: var(--text-secondary); margin-bottom: 16px;">
+                        根据自己的实际情况选择，1=很差 / 5=顶级
+                    </p>
+
+                    <div class="rating-questionnaire">
+                        <div class="rating-question">
+                            <label>1. Speed · 速度</label>
+                            <div class="rating-options">
+                                <label><input type="radio" name="speed" value="1"> 1=很慢</label>
+                                <label><input type="radio" name="speed" value="2"> 2=一般</label>
+                                <label><input type="radio" name="speed" value="3"> 3=还行</label>
+                                <label><input type="radio" name="speed" value="4"> 4=挺快</label>
+                                <label><input type="radio" name="speed" value="5"> 5=顶级</label>
+                            </div>
+                        </div>
+
+                        <div class="rating-question">
+                            <label>2. Dribbling · 盘带</label>
+                            <div class="rating-options">
+                                <label><input type="radio" name="dribbling" value="1"> 1=很差</label>
+                                <label><input type="radio" name="dribbling" value="2"> 2=一般</label>
+                                <label><input type="radio" name="dribbling" value="3"> 3=还行</label>
+                                <label><input type="radio" name="dribbling" value="4"> 4=不错</label>
+                                <label><input type="radio" name="dribbling" value="5"> 5=顶级</label>
+                            </div>
+                        </div>
+
+                        <div class="rating-question">
+                            <label>3. Passing · 传球</label>
+                            <div class="rating-options">
+                                <label><input type="radio" name="passing" value="1"> 1=很差</label>
+                                <label><input type="radio" name="passing" value="2"> 2=一般</label>
+                                <label><input type="radio" name="passing" value="3"> 3=还行</label>
+                                <label><input type="radio" name="passing" value="4"> 4=不错</label>
+                                <label><input type="radio" name="passing" value="5"> 5=顶级</label>
+                            </div>
+                        </div>
+
+                        <div class="rating-question">
+                            <label>4. Shooting · 射门</label>
+                            <div class="rating-options">
+                                <label><input type="radio" name="shooting" value="1"> 1=很差</label>
+                                <label><input type="radio" name="shooting" value="2"> 2=一般</label>
+                                <label><input type="radio" name="shooting" value="3"> 3=还行</label>
+                                <label><input type="radio" name="shooting" value="4"> 4=不错</label>
+                                <label><input type="radio" name="shooting" value="5"> 5=顶级</label>
+                            </div>
+                        </div>
+
+                        <div class="rating-question">
+                            <label>5. Tackling · 防守抢断</label>
+                            <div class="rating-options">
+                                <label><input type="radio" name="tackling" value="1"> 1=很差</label>
+                                <label><input type="radio" name="tackling" value="2"> 2=一般</label>
+                                <label><input type="radio" name="tackling" value="3"> 3=还行</label>
+                                <label><input type="radio" name="tackling" value="4"> 4=不错</label>
+                                <label><input type="radio" name="tackling" value="5"> 5=顶级</label>
+                            </div>
+                        </div>
+
+                        <div class="rating-question">
+                            <label>6. Stamina · 体能</label>
+                            <div class="rating-options">
+                                <label><input type="radio" name="stamina" value="1"> 1=很差</label>
+                                <label><input type="radio" name="stamina" value="2"> 2=一般</label>
+                                <label><input type="radio" name="stamina" value="3"> 3=还行</label>
+                                <label><input type="radio" name="stamina" value="4"> 4=不错</label>
+                                <label><input type="radio" name="stamina" value="5"> 5=顶级</label>
+                            </div>
+                        </div>
+
+                        <div class="rating-question">
+                            <label>7. Strength · 身体对抗</label>
+                            <div class="rating-options">
+                                <label><input type="radio" name="strength" value="1"> 1=很差</label>
+                                <label><input type="radio" name="strength" value="2"> 2=一般</label>
+                                <label><input type="radio" name="strength" value="3"> 3=还行</label>
+                                <label><input type="radio" name="strength" value="4"> 4=不错</label>
+                                <label><input type="radio" name="strength" value="5"> 5=顶级</label>
+                            </div>
+                        </div>
+
+                        <div class="rating-question">
+                            <label>8. Heading · 头球</label>
+                            <div class="rating-options">
+                                <label><input type="radio" name="heading" value="1"> 1=很差</label>
+                                <label><input type="radio" name="heading" value="2"> 2=一般</label>
+                                <label><input type="radio" name="heading" value="3"> 3=还行</label>
+                                <label><input type="radio" name="heading" value="4"> 4=不错</label>
+                                <label><input type="radio" name="heading" value="5"> 5=顶级</label>
+                            </div>
+                        </div>
+
+                        <div class="rating-question">
+                            <label>9. Vision · 球场视野</label>
+                            <div class="rating-options">
+                                <label><input type="radio" name="vision" value="1"> 1=很差</label>
+                                <label><input type="radio" name="vision" value="2"> 2=一般</label>
+                                <label><input type="radio" name="vision" value="3"> 3=还行</label>
+                                <label><input type="radio" name="vision" value="4"> 4=不错</label>
+                                <label><input type="radio" name="vision" value="5"> 5=顶级</label>
+                            </div>
+                        </div>
+
+                        <div class="rating-question">
+                            <label>10. Aggression · 比赛侵略性</label>
+                            <div class="rating-options">
+                                <label><input type="radio" name="aggression" value="1"> 1=很温和</label>
+                                <label><input type="radio" name="aggression" value="2"> 2=一般</label>
+                                <label><input type="radio" name="aggression" value="3"> 3=还行</label>
+                                <label><input type="radio" name="aggression" value="4"> 4=积极</label>
+                                <label><input type="radio" name="aggression" value="5"> 5=非常拼</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="btn btn-primary btn-large" id="save-profile-btn">
+                    💾 Save & Analyze · 保存并生成分析
+                </button>
+            </section>
+
+            <!-- 身体分析 -->
+            <section id="analysis" class="tab-content">
+                <h2>Body Analysis · 身体分析</h2>
+                <div id="analysis-results">
+                    <div class="placeholder">
+                        👆 Please complete profile first · 请先填写个人档案。
+                    </div>
+                </div>
+            </section>
+
+            <!-- 训练计划 -->
+            <section id="plan" class="tab-content">
+                <h2>Training Plan · 训练计划</h2>
+
+                <div class="form-section">
+                    <h3>📁 Saved Plans · 已保存计划</h3>
+                    <div id="saved-plans-list">
+                        <div class="placeholder" style="padding: 20px;">
+                            暂无保存 · No saved plans yet
+                        </div>
+                    </div>
+                    <div class="profile-actions" style="margin-top: 16px; display: flex; gap: 10px;">
+                        <button class="btn btn-primary" id="save-current-plan">
+                            💾 Save Current · 保存当前配置
+                        </button>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3>⚙️ Custom Plan · 自定义训练计划</h3>
+                    <div class="custom-plan-config" id="custom-plan-config">
+                        <div class="form-row" id="training-days-row">
+                        <!-- 这里会动态生成 -->
+                        </div>
+                    </div>
+                    <div style="margin-top: 16px;">
+                        <button class="btn btn-primary" id="generate-custom-plan">
+                            🎯 Generate Plan · 生成训练计划
+                        </button>
+                    </div>
+                </div>
+
+                <div id="plan-results">
+                    <div class="placeholder">
+                        👆 先完成上方配置，再生成训练计划。
+                    </div>
+                </div>
+            </section>
+
+            <!-- 训练追踪 -->
+            <section id="track" class="tab-content">
+                <h2>Training Tracker · 训练追踪</h2>
+                <div id="track-content">
+                    <div class="placeholder">
+                        👆 Please complete profile first · 请先填写个人档案。
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <p>🏴󠁧󠁢󠁥󠁮󠁧󠁿 Come on City! · 曼城加油！💙</p>
+            <p style="margin-top: 8px; opacity: 0.8;">Stay Strong, Stay Blue! · 强壮起来，蓝月精神！</p>
+        </footer>
+    </div>
+
+    <!-- Back to Top Button -->
+    <button class="back-to-top" id="backToTop">↑ Top</button>
+
+    <script src="js/data-store.js"></script>
+    <script src="js/player-database.js"></script>
+    <script src="js/user-profile.js"></script>
+    <script src="js/training-plan.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
