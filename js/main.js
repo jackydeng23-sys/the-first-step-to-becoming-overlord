@@ -471,7 +471,13 @@ const App = {
         // 获取已完成的日期
         const logs = DataStore.loadWorkoutLogs();
         const completedDates = new Set(
-            logs.filter(l => l.completed).map(l => l.date.split('T')[0])
+            logs.filter(l => l.completed).map(l => {
+                let dateStr = l.date;
+                if (dateStr.includes('T')) {
+                    dateStr = dateStr.split('T')[0];
+                }
+                return dateStr;
+            })
         );
 
         // 填充前面的空格
@@ -537,10 +543,8 @@ const App = {
         DataStore.markWorkoutComplete(date, !isCompleted);
 
         if (isCompleted) {
-            card.classList.remove('completed');
             this.showNotification(`❌ 已取消标记 ${date}`, 'info');
         } else {
-            card.classList.add('completed');
             this.showNotification(`✅ ${date} 训练完成！`, 'success');
         }
     }

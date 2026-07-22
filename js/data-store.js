@@ -114,15 +114,27 @@ const DataStore = {
      * 标记日期的训练完成
      */
     markWorkoutComplete(date, completed = true) {
+        // 确保日期格式统一 (YYYY-MM-DD)
+        let dateStr = date;
+        if (dateStr.includes('T')) {
+            dateStr = dateStr.split('T')[0];
+        }
+
         const logs = this.loadWorkoutLogs();
-        const existingIndex = logs.findIndex(log => log.date === date);
+        const existingIndex = logs.findIndex(log => {
+            let logDate = log.date;
+            if (logDate.includes('T')) {
+                logDate = logDate.split('T')[0];
+            }
+            return logDate === dateStr;
+        });
 
         if (existingIndex >= 0) {
             logs[existingIndex].completed = completed;
             logs[existingIndex].completedAt = new Date().toISOString();
         } else {
             logs.push({
-                date,
+                date: dateStr,
                 completed,
                 completedAt: new Date().toISOString()
             });
@@ -145,7 +157,14 @@ const DataStore = {
         let total = 0;
 
         logs.forEach(log => {
-            const logDate = new Date(log.date);
+            // 处理日期字符串，兼容不同格式
+            let dateStr = log.date;
+            if (dateStr.includes('T')) {
+                dateStr = dateStr.split('T')[0];
+            }
+            const logDate = new Date(dateStr);
+            logDate.setHours(0, 0, 0, 0);
+
             if (logDate >= weekStart) {
                 total++;
                 if (log.completed) completed++;
