@@ -457,11 +457,9 @@ const TrainingPlan = {
     },
 
     getDefaultOpenDay(totalDays) {
-        // 默认展开今天对应星期几，如果是新生成就是第一天
-        const today = new Date().getDay(); // 0 = 周日
-        // 如果总天数小于today+1，就是最后一天
-        if (today >= totalDays) return 0;
-        return today;
+        // 安全地返回一个有效的索引，总是返回第一天 (0)
+        // 避免索引越界问题
+        return 0;
     },
 
     /**

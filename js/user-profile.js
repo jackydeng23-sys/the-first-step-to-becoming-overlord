@@ -8,10 +8,19 @@ const UserProfile = {
     },
 
     collectFromForm() {
+        const age = parseInt(document.getElementById('age').value);
+        const height = parseInt(document.getElementById('height').value);
+        const weight = parseFloat(document.getElementById('weight').value);
+
+        // 验证必填项
+        if (!age || !height || !weight || isNaN(age) || isNaN(height) || isNaN(weight)) {
+            return null;
+        }
+
         const basicInfo = {
-            age: parseInt(document.getElementById('age').value),
-            height: parseInt(document.getElementById('height').value),
-            weight: parseFloat(document.getElementById('weight').value)
+            age,
+            height,
+            weight
         };
 
         const preferredFootInput = document.querySelector('input[name="preferred-foot"]:checked');
@@ -22,15 +31,15 @@ const UserProfile = {
             positions.push(cb.value);
         });
 
-        const experience = parseInt(document.getElementById('experience').value);
-        const matchesWeek = parseInt(document.getElementById('matches-week').value);
+        const experience = parseInt(document.getElementById('experience').value) || 0;
+        const matchesWeek = parseInt(document.getElementById('matches-week').value) || 0;
 
         const technicalSkills = [];
         document.querySelectorAll('#football-info-form input[type="checkbox"]:checked:not([name="position"])').forEach(cb => {
             technicalSkills.push(cb.value);
         });
 
-        const injuryHistory = document.getElementById('injury-history').value;
+        const injuryHistory = document.getElementById('injury-history').value || '';
 
         const technicalRatings = this.collectRatings();
 
