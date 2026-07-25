@@ -218,6 +218,26 @@ const UserProfile = {
                 ],
                 injuryRisks: ['Knee · 膝盖', 'Ankle · 脚踝', 'Hamstring · 大腿']
             },
+            'LWB': {
+                name: 'Left Wing-Back · 左翼卫',
+                keyAttributes: [
+                    { name: 'Stamina · 耐力', importance: 10, description: 'Non-stop running · 不停地往返' },
+                    { name: 'Pace · 速度', importance: 10, description: 'Overlapping speed · 插上速度' },
+                    { name: 'Crossing · 传中', importance: 9, description: 'Deliver from wide · 边路传中' },
+                    { name: 'Dribbling · 盘带', importance: 7, description: 'Take on fullback · 突破边后卫' }
+                ],
+                injuryRisks: ['Knee · 膝盖', 'Ankle · 脚踝', 'Hamstring · 大腿', 'Groin · 腹股沟']
+            },
+            'RWB': {
+                name: 'Right Wing-Back · 右翼卫',
+                keyAttributes: [
+                    { name: 'Stamina · 耐力', importance: 10, description: 'Non-stop running · 不停地往返' },
+                    { name: 'Pace · 速度', importance: 10, description: 'Overlapping speed · 插上速度' },
+                    { name: 'Crossing · 传中', importance: 9, description: 'Deliver from wide · 边路传中' },
+                    { name: 'Dribbling · 盘带', importance: 7, description: 'Take on fullback · 突破边后卫' }
+                ],
+                injuryRisks: ['Knee · 膝盖', 'Ankle · 脚踝', 'Hamstring · 大腿', 'Groin · 腹股沟']
+            },
             'DM': {
                 name: 'Defensive Midfielder · 防守中场',
                 keyAttributes: [
@@ -233,6 +253,26 @@ const UserProfile = {
                     { name: 'Passing · 传球', importance: 9, description: 'Control tempo · 掌控节奏' }
                 ],
                 injuryRisks: ['Knee · 膝盖', 'Ankle · 脚踝']
+            },
+            'LM': {
+                name: 'Left Midfielder · 左边前卫',
+                keyAttributes: [
+                    { name: 'Pace · 速度', importance: 9, description: 'Push forward quickly · 快速前插' },
+                    { name: 'Dribbling · 盘带', importance: 9, description: 'Beat defenders · 过人' },
+                    { name: 'Crossing · 传中', importance: 8, description: 'Create chances · 创造机会' },
+                    { name: 'Work Rate · 跑动', importance: 8, description: 'Track back too · 也要回追' }
+                ],
+                injuryRisks: ['Ankle · 脚踝', 'Hamstring · 大腿', 'Groin · 腹股沟']
+            },
+            'RM': {
+                name: 'Right Midfielder · 右边前卫',
+                keyAttributes: [
+                    { name: 'Pace · 速度', importance: 9, description: 'Push forward quickly · 快速前插' },
+                    { name: 'Dribbling · 盘带', importance: 9, description: 'Beat defenders · 过人' },
+                    { name: 'Crossing · 传中', importance: 8, description: 'Create chances · 创造机会' },
+                    { name: 'Work Rate · 跑动', importance: 8, description: 'Track back too · 也要回追' }
+                ],
+                injuryRisks: ['Ankle · 脚踝', 'Hamstring · 大腿', 'Groin · 腹股沟']
             },
             'LW': {
                 name: 'Left Winger · 左边锋',

@@ -1089,6 +1089,120 @@ const PlayerDatabase = {
                 assists: '100+'
             }
         },
+        {
+            id: 'cancelo',
+            name: '坎塞洛',
+            nameEn: 'João Cancelo',
+            club: 'Barcelona · 巴塞罗那',
+            country: 'Portugal · 葡萄牙',
+            position: 'RB',
+            style: 'attacking',
+            height: 182,
+            weight: 74,
+            dateOfBirth: '1994-05-27',
+            birthPlace: 'Barreiro, Portugal · 葡萄牙巴雷鲁',
+            marketValue: '€40M',
+            image: '🇵🇹',
+            links: {
+                transfermarkt: 'https://www.transfermarkt.com/joao-cancelo/profil/spieler/204108',
+                baike: 'https://baike.baidu.com/item/若昂·坎塞洛',
+                wikipedia: 'https://en.wikipedia.org/wiki/João_Cancelo'
+            },
+            ratings: {
+                'dribbling': 90, 'passing': 90, 'shooting': 70,
+                'tackling': 72, 'heading': 55, 'ball-control': 92,
+                'sprint-speed': 88, 'acceleration': 90, 'stamina': 90,
+                'strength': 70, 'jumping': 60, 'agility': 90,
+                'positioning': 75, 'vision': 88, 'decision-making': 82,
+                'aggression': 65, 'leadership': 70,
+                'overlapping': 95, 'recovery-runs': 85, 'crossing-accuracy': 85, 'one-on-one-defense': 65
+            },
+            description: '进攻边翼卫的典范，左右脚全能，技术出色，能攻善守',
+            keyStrengths: ['盘带技术', '传球视野', '左右脚均衡', '插上助攻', '创造力'],
+            developmentTips: '学习他如何用技术和意识来统治边路，完美适合 RWB/LWB',
+            honours: ['英超冠军×3', '德甲冠军×1', '意甲冠军×1'],
+            careerStats: {
+                appearances: '450+',
+                goals: '30+',
+                assists: '70+'
+            }
+        },
+        {
+            id: 'grealish',
+            name: '格拉利什',
+            nameEn: 'Jack Grealish',
+            club: 'Manchester City · 曼城',
+            country: 'England · 英格兰',
+            position: 'RW',
+            style: 'attacking',
+            height: 180,
+            weight: 76,
+            dateOfBirth: '1995-09-10',
+            birthPlace: 'Birmingham, England · 英格兰伯明翰',
+            marketValue: '€80M',
+            image: '🏴󠁧󠁢󠁥󠁮󠁧󠁿',
+            links: {
+                transfermarkt: 'https://www.transfermarkt.com/jack-grealish/profil/spieler/203460',
+                baike: 'https://baike.baidu.com/item/杰克·格拉利什',
+                wikipedia: 'https://en.wikipedia.org/wiki/Jack_Grealish'
+            },
+            ratings: {
+                'dribbling': 92, 'passing': 85, 'shooting': 70,
+                'tackling': 50, 'heading': 55, 'ball-control': 94,
+                'sprint-speed': 80, 'acceleration': 85, 'stamina': 88,
+                'strength': 75, 'jumping': 60, 'agility': 90,
+                'positioning': 78, 'vision': 86, 'decision-making': 84,
+                'aggression': 60, 'leadership': 72,
+                'overlapping': 82, 'recovery-runs': 70, 'crossing-accuracy': 80, 'one-on-one-defense': 45
+            },
+            description: '曼城亿元先生，盘带技术出色，护球能力强，能打边锋和边前卫',
+            keyStrengths: ['盘带护球', '控球能力', '传球视野', '造犯规', '节奏控制'],
+            developmentTips: '学习他的护球和节奏控制，非常适合 RM 位置',
+            honours: ['英超冠军×3', '欧冠冠军', '世俱杯冠军', '社区盾冠军×2'],
+            careerStats: {
+                appearances: '400+',
+                goals: '40+',
+                assists: '70+'
+            }
+        },
+        {
+            id: 'mbabu',
+            name: '姆巴布',
+            nameEn: 'Kevin Mbabu',
+            club: 'Servette · 塞尔维特',
+            country: 'Switzerland · 瑞士',
+            position: 'RB',
+            style: 'complete',
+            height: 184,
+            weight: 83,
+            dateOfBirth: '1995-04-19',
+            birthPlace: 'Crans-près-Céligny, Switzerland · 瑞士克莱昂',
+            marketValue: '€5M',
+            image: '🇨🇭',
+            links: {
+                transfermarkt: 'https://www.transfermarkt.com/kevin-mbabu/profil/spieler/182202',
+                baike: 'https://baike.baidu.com/item/凯文·姆巴布',
+                wikipedia: 'https://en.wikipedia.org/wiki/Kevin_Mbabu'
+            },
+            ratings: {
+                'dribbling': 78, 'passing': 72, 'shooting': 60,
+                'tackling': 78, 'heading': 70, 'ball-control': 78,
+                'sprint-speed': 92, 'acceleration': 94, 'stamina': 90,
+                'strength': 82, 'jumping': 78, 'agility': 88,
+                'positioning': 75, 'vision': 70, 'decision-making': 74,
+                'aggression': 78, 'leadership': 70,
+                'overlapping': 88, 'recovery-runs': 92, 'crossing-accuracy': 70, 'one-on-one-defense': 80
+            },
+            description: '瑞士边翼卫，身体素质爆炸，速度极快，能上能下',
+            keyStrengths: ['速度爆发', '身体对抗', '回追能力', '插上助攻', '体能'],
+            developmentTips: '学习他如何用身体和速度优势来统治边路，典型 RWB 踢法',
+            honours: ['奥地利冠军×2', '瑞士冠军×2'],
+            careerStats: {
+                appearances: '300+',
+                goals: '15+',
+                assists: '30+'
+            }
+        },
 
         // 前锋/中锋
         {
