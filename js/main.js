@@ -394,6 +394,11 @@ const App = {
         document.querySelector(`.tab-btn[data-tab="${tabId}"]`).classList.add('active');
         document.getElementById(tabId).classList.add('active');
 
+        // 如果切换到训练追踪，渲染日历
+        if (tabId === 'track') {
+            this.renderTrainingTracker();
+        }
+
         window.scrollTo({ top: 0, behavior: 'smooth' });
     },
 
