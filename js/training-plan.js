@@ -838,7 +838,7 @@ const TrainingPlan = {
                 });
             }
         } else {
-            // ============ 普通训练日：正常主课模块 ============
+            // ============ 普通训练日：正常主课模块，无位置专项 ============
             const mainExercises = this.getMainExercises(category, cyclePhase);
             modules.push({
                 title: '💪 主课训练',
@@ -852,15 +852,6 @@ const TrainingPlan = {
                     title: '⚡ 爆发力训练',
                     optional: true,
                     exercises: powerExercises
-                });
-            }
-
-            // ============ 普通日位置专项模块 ============
-            const positionExercises = this.getPositionExercises(profile);
-            if (positionExercises.length > 0) {
-                modules.push({
-                    title: '🎯 位置专项',
-                    exercises: positionExercises
                 });
             }
         }
