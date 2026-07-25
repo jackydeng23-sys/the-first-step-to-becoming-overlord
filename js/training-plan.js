@@ -13,35 +13,35 @@ const TrainingPlan = {
                 name: '原地高抬腿',
                 target: '髋屈肌、股四头肌',
                 duration: '45秒',
-                tips: '大腿抬到与地面平行，步频快',
+                tips: ['大腿抬到与地面平行', '步频快', '身体保持直立'],
                 level: '基础'
             },
             {
                 name: '侧向滑步',
                 target: '髋外展肌、下肢灵活性',
                 duration: '30秒/侧',
-                tips: '保持低重心，重心在两脚之间',
+                tips: ['保持低重心', '重心在两脚之间', '滑步不要交叉'],
                 level: '基础'
             },
             {
                 name: '后踢腿跑',
                 target: '腘绳肌、髋屈肌',
                 duration: '45秒',
-                tips: '脚后跟尽量踢到臀部',
+                tips: ['脚跟尽量踢到臀部', '保持节奏', '上身稳定'],
                 level: '基础'
             },
             {
                 name: '弓步走转体',
                 target: '臀部、核心、胸椎',
                 duration: '12步/侧',
-                tips: '前腿弓步时转体，手臂打开',
+                tips: ['前腿弓步时转体', '手臂打开', '后腿尽量蹬直'],
                 level: '基础'
             },
             {
                 name: '虫爬',
                 target: '核心、胸椎、腘绳肌',
                 duration: '8次/侧',
-                tips: '手尽量前伸，脚尽量蹬直',
+                tips: ['手尽量前伸', '脚尽量蹬直', '核心收紧'],
                 level: '进阶'
             }
         ],
@@ -1072,11 +1072,11 @@ const TrainingPlan = {
         }
 
         let mistakesHtml = '';
-        if (exercise.mistakes) {
+        if (exercise.mistakes && exercise.mistakes.length > 0) {
             mistakesHtml = `
-                <ul style="margin-top: 8px; color: #dc2626; font-size: 0.85rem; padding-left: 20px;">
+                <p style="margin-top: 8px; color: #dc2626; font-size: 0.85rem;">
                     ❌ 常见错误：${exercise.mistakes.join(' · ')}
-                </ul>
+                </p>
             `;
         }
 
