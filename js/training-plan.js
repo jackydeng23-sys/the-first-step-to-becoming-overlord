@@ -912,8 +912,8 @@ const TrainingPlan = {
         const positionMap = {
             'GK': 'GK',
             'CB': 'CB',
-            'LB': 'LB', 'LWB': 'LB',
-            'RB': 'RB', 'RWB': 'RB',
+            'LB': 'LB', 'LWB': 'LWB',
+            'RB': 'RB', 'RWB': 'RWB',
             'DM': 'DM', 'CM': 'CM', 'AM': 'AM',
             'LM': 'LM', 'LW': 'LW',
             'RM': 'RM', 'RW': 'RW',
