@@ -651,7 +651,7 @@ const App = {
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
             max-width: 500px;
             width: 100%;
-            text-align: center !important;
+            text-align: left;
             animation: popIn 0.3s ease;
         `;
 
@@ -664,14 +664,11 @@ const App = {
                     0% { transform: scale(0.8); opacity: 0; }
                     100% { transform: scale(1); opacity: 1; }
                 }
-                #welcome-overlay h2, #welcome-overlay h3, #welcome-overlay p {
-                    text-align: center !important;
-                }
             </style>
-            <div style="font-size: 4rem; margin-bottom: 16px; text-align: center !important;">🏋️</div>
-            <h2 style="margin: 0 0 8px 0; font-size: 1.8rem; text-align: center !important;">Welcome Back!</h2>
-            <h3 style="margin: 0 0 20px 0; font-size: 1.4rem; opacity: 0.95; text-align: center !important;">欢迎回来！</h3>
-            <p style="margin: 0 0 30px 0; font-size: 1.1rem; opacity: 0.9; line-height: 1.6; text-align: center !important;">
+            <div style="font-size: 4rem; margin-bottom: 16px;">🏋️</div>
+            <h2 style="margin: 0 0 8px 0; font-size: 1.8rem;">Welcome Back!</h2>
+            <h3 style="margin: 0 0 20px 0; font-size: 1.4rem; opacity: 0.95;">欢迎回来！</h3>
+            <p style="margin: 0 0 30px 0; font-size: 1.1rem; opacity: 0.9; line-height: 1.6;">
                 你在 ${timeAgo} 设置过训练计划<br>
                 要继续沿用上次的计划吗？
             </p>
