@@ -819,8 +819,22 @@ const TrainingPlan = {
     generateDayPlan: function(dayName, category, cyclePhase, profile) {
         const modules = [];
 
-        // ============ 1. 热身激活模块 ============
-        const warmupExercises = this.exerciseLibrary.warmup.slice(0, 4);
+        // ============ 恢复放松日：直接简化，不搞复杂 ============
+        if (category === 'recovery') {
+            const recoveryExercises = this.exerciseLibrary.recovery;
+            modules.push({
+                title: '🧘 恢复放松日',
+                exercises: recoveryExercises
+            });
+            return {
+                dayName: dayName,
+                category: category,
+                modules: modules
+            };
+        }
+
+        // ============ 1. 热身激活模块：根据训练部位调整 ============
+        let warmupExercises = this.getWarmupForCategory(category);
         modules.push({
             title: '🔥 热身激活',
             duration: '10-15分钟',
@@ -829,7 +843,6 @@ const TrainingPlan = {
 
         // ============ 足球专项日：只练足球，无力量主课 ============
         if (category === 'football') {
-            // ============ 位置专项模块（足球专项日这个是主课）============
             const positionExercises = this.getPositionExercises(profile);
             if (positionExercises.length > 0) {
                 modules.push({
@@ -838,14 +851,12 @@ const TrainingPlan = {
                 });
             }
         } else {
-            // ============ 普通训练日：正常主课模块，无位置专项 ============
             const mainExercises = this.getMainExercises(category, cyclePhase);
             modules.push({
                 title: '💪 主课训练',
                 exercises: mainExercises
             });
 
-            // ============ 爆发力模块（可选，强度提升期加入）==========
             if (cyclePhase !== 'taper' && category === 'full') {
                 const powerExercises = this.exerciseLibrary.power.slice(0, 2);
                 modules.push({
@@ -856,8 +867,8 @@ const TrainingPlan = {
             }
         }
 
-        // ============ 5. 恢复放松模块 ============
-        const recoveryExercises = this.exerciseLibrary.recovery.slice(0, 5);
+        // ============ 5. 恢复放松模块：根据训练部位调整 ============
+        let recoveryExercises = this.getRecoveryForCategory(category);
         modules.push({
             title: '🧘 恢复放松',
             exercises: recoveryExercises
@@ -868,6 +879,77 @@ const TrainingPlan = {
             category: category,
             modules: modules
         };
+    },
+
+    // ============ 根据训练分类获取针对性热身 ============
+    getWarmupForCategory: function(category) {
+        const allWarmup = this.exerciseLibrary.warmup;
+        let selected = [];
+
+        // 基础热身
+        selected.push(allWarmup[0]); // 原地高抬腿
+
+        switch(category) {
+            case 'lower':
+            case 'full':
+                selected.push(allWarmup[1]); // 侧向滑步
+                selected.push(allWarmup[2]); // 后踢腿跑
+                selected.push(allWarmup[3]); // 弓步走转体
+                break;
+            case 'upper':
+                // 上肢日：基础热身 + 多加点上肢相关（我们可以调整下）
+                selected.push(allWarmup[1]);
+                selected.push(allWarmup[3]);
+                break;
+            case 'core':
+                selected.push(allWarmup[3]);
+                selected.push(allWarmup[4]);
+                break;
+            case 'cardio':
+            case 'football':
+                selected.push(allWarmup[1]);
+                selected.push(allWarmup[2]);
+                break;
+            default:
+                selected = allWarmup.slice(0, 4);
+        }
+        return selected;
+    },
+
+    // ============ 根据训练分类获取针对性恢复 ============
+    getRecoveryForCategory: function(category) {
+        const allRecovery = this.exerciseLibrary.recovery;
+        let selected = [];
+
+        switch(category) {
+            case 'lower':
+            case 'full':
+                selected.push(allRecovery[0]); // 泡沫轴滚大腿
+                selected.push(allRecovery[1]); // 泡沫轴滚臀部
+                selected.push(allRecovery[3]); // 股四头肌拉伸
+                selected.push(allRecovery[4]); // 腘绳肌拉伸
+                selected.push(allRecovery[5]); // 臀部拉伸
+                break;
+            case 'upper':
+                selected.push(allRecovery[2]); // 泡沫轴滚上背
+                selected.push(allRecovery[6]); // 胸部拉伸
+                selected.push(allRecovery[7]); // 婴儿式放松
+                break;
+            case 'core':
+                selected.push(allRecovery[2]);
+                selected.push(allRecovery[7]);
+                break;
+            case 'cardio':
+            case 'football':
+                selected.push(allRecovery[0]);
+                selected.push(allRecovery[1]);
+                selected.push(allRecovery[3]);
+                selected.push(allRecovery[7]);
+                break;
+            default:
+                selected = allRecovery.slice(0, 5);
+        }
+        return selected;
     },
 
     getMainExercises: function(category, cyclePhase) {
