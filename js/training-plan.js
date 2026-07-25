@@ -1146,9 +1146,11 @@ const TrainingPlan = {
         ` : '';
 
         let weightSuggestion = '';
-        if (profile) {
+        // 只在力量训练相关动作上显示重量建议
+        const showWeightFor = ['杠铃深蹲', '罗马尼亚硬拉', '箭步蹲', '保加利亚分腿蹲', '俯身哑铃划船', '哑铃肩推', '二头弯举', '三头绳索下压', '壶铃摆动', '药球旋转投掷', '哑铃抓举', '腘绳肌弯举', '小腿提踵'];
+        if (profile && showWeightFor.includes(exercise.name)) {
             const weightTip = this.getWeightSuggestion(exercise.name, profile, exercise.level);
-            if (weightTip) {
+            if (weightTip && weightTip.includes('kg')) {
                 weightSuggestion = `
                     <p style="margin-top: 8px; color: #1C2C5B; font-size: 0.85rem; font-weight: 600; background: rgba(108, 171, 221, 0.1); padding: 8px 12px; border-radius: 8px;">
                         ${weightTip}
