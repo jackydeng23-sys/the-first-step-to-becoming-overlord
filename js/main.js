@@ -665,10 +665,10 @@ const App = {
                     100% { transform: scale(1); opacity: 1; }
                 }
             </style>
-            <div style="font-size: 4rem; margin-bottom: 16px;">🏋️</div>
-            <h2 style="margin: 0 0 8px 0; font-size: 1.8rem;">Welcome Back!</h2>
-            <h3 style="margin: 0 0 20px 0; font-size: 1.4rem; opacity: 0.95;">欢迎回来！</h3>
-            <p style="margin: 0 0 30px 0; font-size: 1.1rem; opacity: 0.9; line-height: 1.6;">
+            <div style="font-size: 4rem; margin-bottom: 16px; text-align: left;">🏋️</div>
+            <h2 style="margin: 0 0 8px 0; font-size: 1.8rem; text-align: left;">Welcome Back!</h2>
+            <h3 style="margin: 0 0 20px 0; font-size: 1.4rem; opacity: 0.95; text-align: left;">欢迎回来！</h3>
+            <p style="margin: 0 0 30px 0; font-size: 1.1rem; opacity: 0.9; line-height: 1.6; text-align: left;">
                 你在 ${timeAgo} 设置过训练计划<br>
                 要继续沿用上次的计划吗？
             </p>
