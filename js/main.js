@@ -18,6 +18,7 @@ const App = {
         this.loadSavedPlans(); // 加载历史训练计划列表
         this.bindProfileLoadEvents();
         this.bindPlanLoadEvents(); // 绑定训练计划加载事件
+        this.checkAndShowWelcomeBanner(); // 检查并显示欢迎横幅
     },
 
     setupTabs() {
@@ -75,6 +76,9 @@ const App = {
         // 生成分析并渲染
         this.analysis = UserProfile.generateAnalysis(this.profile);
         UserProfile.renderAnalysis(this.profile, this.analysis);
+
+        // 保存会话状态
+        this.saveSessionState('analysis', null);
 
         this.switchTab('analysis');
         this.showNotification('✅ 分析已生成！', 'success');
@@ -383,6 +387,10 @@ const App = {
         UserProfile.renderAnalysis(this.profile, this.analysis);
         this.plan = TrainingPlan.generate(this.profile, this.analysis, customConfig);
         TrainingPlan.render(this.plan);
+
+        // 保存会话状态
+        this.saveSessionState('plan', customConfig);
+
         this.switchTab('plan');
         this.showNotification('✅ 训练计划已生成！', 'success');
     },
@@ -397,6 +405,12 @@ const App = {
         // 如果切换到训练追踪，渲染日历
         if (tabId === 'track') {
             this.renderTrainingTracker();
+        }
+
+        // 保存会话状态（如果已有 profile）
+        if (this.profile) {
+            const planConfig = DataStore.loadLastPlanConfig();
+            this.saveSessionState(tabId, planConfig);
         }
 
         window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -552,6 +566,183 @@ const App = {
         } else {
             this.showNotification(`✅ ${date} 训练完成！`, 'success');
         }
+    },
+
+    // ========== 会话状态管理 ==========
+
+    saveSessionState(currentTab, planConfig) {
+        // 保存当前状态，供下次恢复
+        const session = {
+            currentTab: currentTab,
+            hasProfile: !!this.profile,
+            hasAnalysis: !!this.analysis,
+            hasPlan: !!this.plan,
+            planConfig: planConfig
+        };
+        DataStore.saveLastSession(session);
+
+        // 同时保存完整数据以便恢复
+        if (this.profile) {
+            DataStore.saveUserProfile(this.profile);
+        }
+        if (this.analysis) {
+            DataStore.saveUserAnalysis(this.analysis);
+        }
+        if (this.plan) {
+            DataStore.saveTrainingPlan(this.plan);
+        }
+        if (planConfig) {
+            DataStore.saveLastPlanConfig(planConfig);
+        }
+    },
+
+    checkAndShowWelcomeBanner() {
+        const lastSession = DataStore.loadLastSession();
+        if (!lastSession) return;
+
+        // 检查是否有有效数据
+        const savedProfile = DataStore.loadUserProfile();
+        const savedAnalysis = DataStore.loadUserAnalysis();
+        const savedPlan = DataStore.loadTrainingPlan();
+
+        if (!savedProfile) {
+            DataStore.clearLastSession();
+            return;
+        }
+
+        // 显示欢迎横幅
+        this.showWelcomeBanner(lastSession, savedProfile);
+    },
+
+    showWelcomeBanner(session, profile) {
+        const banner = document.createElement('div');
+        banner.id = 'welcome-banner';
+        banner.style.cssText = `
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(135deg, #1C2C5B 0%, #6CABDD 100%);
+            color: white;
+            padding: 20px;
+            z-index: 99999;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        `;
+
+        const savedTime = new Date(session.savedAt);
+        const timeAgo = this.getTimeAgo(savedTime);
+
+        banner.innerHTML = `
+            <div style="max-width: 800px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
+                <div>
+                    <h4 style="margin: 0; font-size: 1.1rem;">👋 Welcome Back! 欢迎回来！</h4>
+                    <p style="margin: 6px 0 0 0; opacity: 0.9; font-size: 0.9rem;">
+                        你在 ${timeAgo} 有未完成的训练计划，要继续吗？
+                    </p>
+                </div>
+                <div style="display: flex; gap: 10px;">
+                    <button id="btn-continue-session" style="
+                        background: white;
+                        color: #1C2C5B;
+                        border: none;
+                        padding: 10px 20px;
+                        border-radius: 10px;
+                        font-weight: 700;
+                        cursor: pointer;
+                    ">
+                        🚀 Continue · 继续
+                    </button>
+                    <button id="btn-start-fresh" style="
+                        background: transparent;
+                        color: white;
+                        border: 2px solid white;
+                        padding: 10px 20px;
+                        border-radius: 10px;
+                        font-weight: 700;
+                        cursor: pointer;
+                    ">
+                        🔄 Start Over · 重新开始
+                    </button>
+                </div>
+            </div>
+        `;
+
+        document.body.prepend(banner);
+
+        // 绑定事件
+        document.getElementById('btn-continue-session').addEventListener('click', () => {
+            this.restoreLastSession();
+            banner.remove();
+        });
+
+        document.getElementById('btn-start-fresh').addEventListener('click', () => {
+            DataStore.clearLastSession();
+            banner.remove();
+            this.showNotification('🆕 已清除历史记录', 'info');
+        });
+    },
+
+    getTimeAgo(date) {
+        const now = new Date();
+        const diff = now - date;
+        const minutes = Math.floor(diff / 60000);
+        const hours = Math.floor(diff / 3600000);
+        const days = Math.floor(diff / 86400000);
+
+        if (minutes < 1) return '刚刚';
+        if (minutes < 60) return `${minutes}分钟前`;
+        if (hours < 24) return `${hours}小时前`;
+        return `${days}天前`;
+    },
+
+    restoreLastSession() {
+        const savedProfile = DataStore.loadUserProfile();
+        const savedAnalysis = DataStore.loadUserAnalysis();
+        const savedPlan = DataStore.loadTrainingPlan();
+        const savedPlanConfig = DataStore.loadLastPlanConfig();
+
+        if (!savedProfile) {
+            this.showNotification('❌ 无法恢复存档', 'error');
+            return;
+        }
+
+        // 恢复 profile
+        this.profile = savedProfile;
+        UserProfile.fillForm(this.profile);
+
+        // 恢复 analysis
+        if (savedAnalysis) {
+            this.analysis = savedAnalysis;
+            UserProfile.renderAnalysis(this.profile, this.analysis);
+        }
+
+        // 恢复 plan config 到下拉菜单
+        if (savedPlanConfig && savedPlanConfig.length > 0) {
+            const configMap = {};
+            savedPlanConfig.forEach(cfg => {
+                configMap[cfg.dayName] = cfg.category;
+            });
+            document.querySelectorAll('#training-days-row select').forEach(select => {
+                const dayName = select.dataset.day;
+                if (configMap[dayName]) {
+                    select.value = configMap[dayName];
+                }
+            });
+        }
+
+        // 恢复 plan
+        if (savedPlan) {
+            this.plan = savedPlan;
+            TrainingPlan.render(this.plan);
+        }
+
+        // 跳转到上次的页面
+        const lastSession = DataStore.loadLastSession();
+        if (lastSession && lastSession.currentTab) {
+            this.switchTab(lastSession.currentTab);
+        }
+
+        this.showNotification('✅ 已恢复上次会话！', 'success');
     }
 };
 

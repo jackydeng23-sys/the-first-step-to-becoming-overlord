@@ -9,7 +9,10 @@ const DataStore = {
         WORKOUT_LOGS: 'fitness_workout_logs',
         TRAINING_PLAN: 'fitness_training_plan',
         SAVED_PROFILES: 'fitness_saved_profiles',
-        SAVED_PLANS: 'fitness_saved_plans'
+        SAVED_PLANS: 'fitness_saved_plans',
+        LAST_SESSION: 'fitness_last_session',
+        USER_ANALYSIS: 'fitness_user_analysis',
+        LAST_PLAN_CONFIG: 'fitness_last_plan_config'
     },
 
     /**
@@ -241,5 +244,38 @@ const DataStore = {
         const archives = this.loadPlanArchives();
         archives.splice(index, 1);
         return this.save(this.KEYS.SAVED_PLANS, archives);
+    },
+
+    // ========== 会话状态管理 ==========
+
+    saveLastSession(sessionData) {
+        return this.save(this.KEYS.LAST_SESSION, {
+            ...sessionData,
+            savedAt: new Date().toISOString()
+        });
+    },
+
+    loadLastSession() {
+        return this.load(this.KEYS.LAST_SESSION, null);
+    },
+
+    saveUserAnalysis(analysis) {
+        return this.save(this.KEYS.USER_ANALYSIS, analysis);
+    },
+
+    loadUserAnalysis() {
+        return this.load(this.KEYS.USER_ANALYSIS, null);
+    },
+
+    saveLastPlanConfig(config) {
+        return this.save(this.KEYS.LAST_PLAN_CONFIG, config);
+    },
+
+    loadLastPlanConfig() {
+        return this.load(this.KEYS.LAST_PLAN_CONFIG, null);
+    },
+
+    clearLastSession() {
+        this.remove(this.KEYS.LAST_SESSION);
     }
 };
