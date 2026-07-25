@@ -811,7 +811,8 @@ const TrainingPlan = {
             goal: {
                 targetWeight: this.calculateTargetWeight(customConfig),
                 focus: this.getTrainingFocus(customConfig)
-            }
+            },
+            profile: profile // 保存profile用于重量建议
         };
     },
 
@@ -902,6 +903,53 @@ const TrainingPlan = {
         return exercises;
     },
 
+    // ============ 计算训练重量建议 ============
+    getWeightSuggestion: function(exerciseName, profile, exerciseLevel) {
+        if (!profile || !profile.weight) return '根据自身体力选择';
+
+        const weight = profile.weight; // 体重（kg）
+        const experience = profile.experience || 1; // 训练经验（年）
+
+        // 根据经验确定系数
+        let expMultiplier = 0.3; // 新手
+        if (experience >= 5) expMultiplier = 0.6; // 5年以上
+        else if (experience >= 3) expMultiplier = 0.5; // 3-5年
+        else if (experience >= 1) expMultiplier = 0.4; // 1-3年
+
+        // 不同动作的体重比例
+        const exerciseMultipliers = {
+            '杠铃深蹲': 0.8, '罗马尼亚硬拉': 0.7, '深蹲跳': 0, '箱跳': 0,
+            '箭步蹲': 0.3, '保加利亚分腿蹲': 0.25, '腘绳肌弯举': 0.15, '小腿提踵': 0.2,
+            '俯卧撑': 0, '平板支撑': 0, '侧平板支撑': 0, '鸟狗式': 0, '死虫': 0,
+            '药球旋转投掷': 0.1, '哑铃抓举': 0.2,
+            '俯身哑铃划船': 0.25, '哑铃肩推': 0.2, '二头弯举': 0.12, '三头绳索下压': 0.1,
+            '壶铃摆动': 0.3, '登山者': 0, '快速伸缩复合弓步': 0,
+            '引体向上': 0, '双杠臂屈伸': 0
+        };
+
+        let baseMultiplier = exerciseMultipliers[exerciseName] || 0.2;
+
+        // 根据难度调整
+        if (exerciseLevel === '进阶') baseMultiplier *= 1.15;
+        if (exerciseLevel === '挑战') baseMultiplier *= 1.3;
+
+        let suggestedWeight = weight * baseMultiplier * expMultiplier;
+
+        // 给合理的范围
+        if (suggestedWeight > 0) {
+            const min = Math.max(2.5, Math.round(suggestedWeight * 0.7 / 2.5) * 2.5);
+            const max = Math.round(suggestedWeight * 1.3 / 2.5) * 2.5;
+            return `💡 建议哑铃/杠铃重量：${min}-${max} kg（单侧）`;
+        }
+
+        // 不需要重量的动作
+        if (['俯卧撑', '平板支撑', '侧平板支撑', '鸟狗式', '死虫', '登山者', '深蹲跳', '箱跳', '快速伸缩复合弓步'].includes(exerciseName)) {
+            return '💡 自重训练，专注动作质量';
+        }
+
+        return '💡 根据自身体力选择合适的重量';
+    },
+
     getPositionExercises: function(profile) {
         if (!profile || !profile.positions || profile.positions.length === 0) {
             return [];
@@ -953,6 +1001,7 @@ const TrainingPlan = {
     // ============ 渲染训练计划 ============
     render: function(plan) {
         const container = document.getElementById('plan-results');
+        const profile = plan.profile;
 
         let html = `
             <div class="card">
@@ -999,7 +1048,7 @@ const TrainingPlan = {
                     `;
 
                     module.exercises.forEach(exercise => {
-                        html += this.renderExercise(exercise);
+                        html += this.renderExercise(exercise, profile, week.phase);
                     });
 
                     html += `
@@ -1030,7 +1079,7 @@ const TrainingPlan = {
         return html;
     },
 
-    renderExercise: function(exercise) {
+    renderExercise: function(exercise, profile, cyclePhase) {
         let metaParts = [];
         if (exercise.sets) metaParts.push(`${exercise.sets} 组`);
         if (exercise.reps) metaParts.push(`× ${exercise.reps} 次`);
@@ -1092,6 +1141,18 @@ const TrainingPlan = {
             </p>
         ` : '';
 
+        let weightSuggestion = '';
+        if (profile) {
+            const weightTip = this.getWeightSuggestion(exercise.name, profile, exercise.level);
+            if (weightTip) {
+                weightSuggestion = `
+                    <p style="margin-top: 8px; color: #1C2C5B; font-size: 0.85rem; font-weight: 600; background: rgba(108, 171, 221, 0.1); padding: 8px 12px; border-radius: 8px;">
+                        ${weightTip}
+                    </p>
+                `;
+            }
+        }
+
         return `
             <div class="exercise-item">
                 <div class="exercise-info">
@@ -1102,6 +1163,7 @@ const TrainingPlan = {
                     </div>
                     ${meta ? `<div class="exercise-meta">${meta}</div>` : ''}
                     ${targetHtml}
+                    ${weightSuggestion}
                     ${tipsHtml}
                     ${mistakesHtml}
                     ${descriptionHtml}
