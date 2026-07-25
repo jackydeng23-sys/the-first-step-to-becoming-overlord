@@ -1311,18 +1311,58 @@ const PlayerDatabase = {
     findMatchingPlayers(userProfile, count = 3) {
         const userRatings = userProfile.technicalRatings || {};
 
+        // 位置映射：把用户选择的位置映射到对应的球员位置
+        const positionMap = {
+            'GK': ['GK'],
+            'CB': ['CB'],
+            'LB': ['LB', 'RB'],
+            'RB': ['RB', 'LB'],
+            'LWB': ['LB', 'RB', 'LW', 'RW'],
+            'RWB': ['RB', 'LB', 'RW', 'LW'],
+            'DM': ['DM', 'CM'],
+            'CM': ['CM', 'DM', 'AM'],
+            'LM': ['LW', 'LB', 'CM'],
+            'RM': ['RW', 'RB', 'CM'],
+            'AM': ['AM', 'CM', 'LW', 'RW'],
+            'LW': ['LW', 'RW', 'AM'],
+            'RW': ['RW', 'LW', 'AM'],
+            'CF': ['CF', 'ST'],
+            'ST': ['ST', 'CF']
+        };
+
         const playersWithSimilarity = this.players.map(player => {
             const similarity = this.calculateSimilarity(userRatings, player);
             let positionBonus = 0;
-            if (userProfile.positions && userProfile.positions.includes(player.position)) positionBonus = 12;
+
+            // 检查位置匹配
+            if (userProfile.positions && userProfile.positions.length > 0) {
+                const matchingPositions = userProfile.positions.flatMap(pos => positionMap[pos] || [pos]);
+                if (matchingPositions.includes(player.position)) {
+                    positionBonus = 12;
+                }
+            }
+
             const heightDiff = Math.abs(player.height - (userProfile.height || 175));
             const heightBonus = Math.max(0, 6 - heightDiff / 10);
             const finalSimilarity = Math.min(100, similarity + positionBonus + heightBonus);
             return { ...player, similarity: Math.round(finalSimilarity) };
         });
 
+        // 按相似度排序，但确保返回不同位置的球员
         playersWithSimilarity.sort((a, b) => b.similarity - a.similarity);
-        return playersWithSimilarity.slice(0, count);
+
+        const result = [];
+        const usedPositions = new Set();
+
+        for (const player of playersWithSimilarity) {
+            if (result.length >= count) break;
+            if (!usedPositions.has(player.position) || usedPositions.size >= count - 1) {
+                result.push(player);
+                usedPositions.add(player.position);
+            }
+        }
+
+        return result;
     },
 
     determineUserStyle(ratings) {
