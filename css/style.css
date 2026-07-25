@@ -849,6 +849,46 @@ footer {
     .form-section {
         padding: 20px;
     }
+
+    /* 训练计划标签移动端优化 */
+    .daily-tabs {
+        justify-content: center;
+    }
+
+    .daily-tab {
+        flex: 1 1 auto;
+        padding: 10px 14px;
+        font-size: 0.9rem;
+        min-width: 80px;
+    }
+
+    /* 训练计划配置行优化 */
+    #training-days-row {
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+        gap: 10px;
+    }
+
+    /* 球员卡片网格优化 */
+    [style*="grid-template-columns: repeat(auto-fit, minmax(260px"] {
+        grid-template-columns: 1fr !important;
+    }
+
+    /* 日历在移动端优化 */
+    .day-grid {
+        gap: 6px;
+    }
+
+    .day-card {
+        padding: 10px 6px;
+    }
+
+    .day-name {
+        font-size: 0.8rem;
+    }
+
+    .day-number {
+        font-size: 1.1rem;
+    }
 }
 
 @media (max-width: 480px) {
@@ -862,6 +902,53 @@ footer {
 
     .stat-grid {
         grid-template-columns: 1fr;
+    }
+
+    /* 小屏幕标签 */
+    .tab-btn {
+        flex: 1 1 100%;
+        font-size: 0.9rem;
+        padding: 10px 12px;
+    }
+
+    /* 训练计划配置更紧凑 */
+    #training-days-row {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
+    }
+
+    .custom-day-select {
+        padding: 8px;
+    }
+
+    /* 按钮在小屏幕更易点击 */
+    .btn {
+        padding: 12px 20px;
+        font-size: 0.95rem;
+    }
+
+    .btn-large {
+        padding: 16px 24px;
+        font-size: 1rem;
+    }
+
+    /* 评分选项在小屏幕更紧凑 */
+    .rating-options {
+        gap: 6px;
+    }
+
+    .rating-options label {
+        padding: 8px 10px;
+        font-size: 0.85rem;
+    }
+
+    /* 回到顶部按钮移动端优化 */
+    .back-to-top {
+        width: 50px;
+        height: 50px;
+        bottom: 20px;
+        right: 20px;
+        font-size: 0.9rem;
     }
 }
 
@@ -940,6 +1027,13 @@ footer {
     font-size: 0.95rem;
     font-weight: 600;
     color: var(--primary-dark);
+}
+
+/* 训练计划配置行 - 响应式 */
+#training-days-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 12px;
 }
 
 /* ========== 每日折叠手风琴 ========== */
