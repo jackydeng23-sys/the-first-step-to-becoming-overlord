@@ -895,8 +895,9 @@ const TrainingPlan = {
             case 'recovery':
                 exercises = this.exerciseLibrary.recovery;
                 break;
-            case 'football':
-                exercises = this.exerciseLibrary.cardio.slice(0, 2);
+            case 'agility':
+                // 敏捷速度训练：爆发力模块
+                exercises = this.exerciseLibrary.power;
                 break;
         }
 
@@ -943,7 +944,7 @@ const TrainingPlan = {
         }
 
         // 不需要重量的动作
-        if (['俯卧撑', '平板支撑', '侧平板支撑', '鸟狗式', '死虫', '登山者', '深蹲跳', '箱跳', '快速伸缩复合弓步'].includes(exerciseName)) {
+        if (['俯卧撑', '平板支撑', '侧平板支撑', '鸟狗式', '死虫', '登山者', '深蹲跳', '箱跳', '快速伸缩复合弓步', '原地高抬腿', '侧向滑步', '后踢腿跑', '弓步走转体', '虫爬', '泡沫轴滚大腿', '泡沫轴滚臀部', '泡沫轴滚上背', '股四头肌静态拉伸', '腘绳肌静态拉伸', '臀部静态拉伸', '胸部静态拉伸', '婴儿式放松'].includes(exerciseName)) {
             return '💡 自重训练，专注动作质量';
         }
 
@@ -989,12 +990,13 @@ const TrainingPlan = {
         const categories = config.map(d => d.category);
         const hasStrength = ['lower', 'upper', 'full'].some(c => categories.includes(c));
         const hasCardio = categories.includes('cardio');
-        const hasFootball = categories.includes('football');
+        const hasAgility = categories.includes('agility');
 
-        if (hasStrength && hasCardio) return '综合能力提升';
+        if (hasStrength && hasCardio && hasAgility) return '综合能力提升';
+        if (hasStrength && hasCardio) return '力量耐力提升';
         if (hasStrength) return '力量提升';
         if (hasCardio) return '耐力提升';
-        if (hasFootball) return '足球专项';
+        if (hasAgility) return '敏捷速度提升';
         return '综合训练';
     },
 

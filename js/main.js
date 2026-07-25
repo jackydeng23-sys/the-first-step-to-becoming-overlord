@@ -308,7 +308,7 @@ const App = {
             { value: 'full', label: '全身训练' },
             { value: 'cardio', label: '耐力有氧' },
             { value: 'recovery', label: '恢复放松' },
-            { value: 'football', label: '足球专项' }
+            { value: 'agility', label: '敏捷速度' }
         ];
 
         let html = '';
@@ -316,8 +316,8 @@ const App = {
             let options = categories.map(cat =>
                 `<option value="${cat.value}">${cat.label}</option>`
             ).join('');
-            // 默认周六足球专项，其他根据情况设置
-            const defaultValue = day === '周六' ? 'football' : (day === '周日' ? 'recovery' : 'none');
+            // 默认周六敏捷速度，其他根据情况设置
+            const defaultValue = day === '周六' ? 'agility' : (day === '周日' ? 'recovery' : 'none');
             html += `
                 <div class="custom-day-select">
                     <label style="font-size: 0.85rem; margin-bottom: 6px; display: block;">${day}</label>
