@@ -827,30 +827,42 @@ const TrainingPlan = {
             exercises: warmupExercises
         });
 
-        // ============ 2. 主课模块 ============
-        const mainExercises = this.getMainExercises(category, cyclePhase);
-        modules.push({
-            title: '💪 主课训练',
-            exercises: mainExercises
-        });
-
-        // ============ 3. 爆发力模块（可选，强度提升期加入）==========
-        if (cyclePhase !== 'taper' && category === 'full') {
-            const powerExercises = this.exerciseLibrary.power.slice(0, 2);
+        // ============ 足球专项日：只练足球，无力量主课 ============
+        if (category === 'football') {
+            // ============ 位置专项模块（足球专项日这个是主课）============
+            const positionExercises = this.getPositionExercises(profile);
+            if (positionExercises.length > 0) {
+                modules.push({
+                    title: '⚽ 足球专项',
+                    exercises: positionExercises
+                });
+            }
+        } else {
+            // ============ 普通训练日：正常主课模块 ============
+            const mainExercises = this.getMainExercises(category, cyclePhase);
             modules.push({
-                title: '⚡ 爆发力训练',
-                optional: true,
-                exercises: powerExercises
+                title: '💪 主课训练',
+                exercises: mainExercises
             });
-        }
 
-        // ============ 4. 位置专项模块 ============
-        const positionExercises = this.getPositionExercises(profile);
-        if (positionExercises.length > 0) {
-            modules.push({
-                title: '🎯 位置专项',
-                exercises: positionExercises
-            });
+            // ============ 爆发力模块（可选，强度提升期加入）==========
+            if (cyclePhase !== 'taper' && category === 'full') {
+                const powerExercises = this.exerciseLibrary.power.slice(0, 2);
+                modules.push({
+                    title: '⚡ 爆发力训练',
+                    optional: true,
+                    exercises: powerExercises
+                });
+            }
+
+            // ============ 普通日位置专项模块 ============
+            const positionExercises = this.getPositionExercises(profile);
+            if (positionExercises.length > 0) {
+                modules.push({
+                    title: '🎯 位置专项',
+                    exercises: positionExercises
+                });
+            }
         }
 
         // ============ 5. 恢复放松模块 ============
@@ -895,9 +907,9 @@ const TrainingPlan = {
             case 'recovery':
                 exercises = this.exerciseLibrary.recovery;
                 break;
-            case 'agility':
-                // 敏捷速度训练：爆发力模块
-                exercises = this.exerciseLibrary.power;
+            case 'football':
+                // 足球专项日：在 generateDayPlan 里单独处理了
+                exercises = [];
                 break;
         }
 
@@ -990,13 +1002,12 @@ const TrainingPlan = {
         const categories = config.map(d => d.category);
         const hasStrength = ['lower', 'upper', 'full'].some(c => categories.includes(c));
         const hasCardio = categories.includes('cardio');
-        const hasAgility = categories.includes('agility');
+        const hasFootball = categories.includes('football');
 
-        if (hasStrength && hasCardio && hasAgility) return '综合能力提升';
-        if (hasStrength && hasCardio) return '力量耐力提升';
+        if (hasStrength && hasCardio) return '综合能力提升';
         if (hasStrength) return '力量提升';
         if (hasCardio) return '耐力提升';
-        if (hasAgility) return '敏捷速度提升';
+        if (hasFootball) return '足球专项';
         return '综合训练';
     },
 
