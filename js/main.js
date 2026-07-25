@@ -615,69 +615,96 @@ const App = {
     },
 
     showWelcomeBanner(session, profile) {
-        const banner = document.createElement('div');
-        banner.id = 'welcome-banner';
-        banner.style.cssText = `
+        const overlay = document.createElement('div');
+        overlay.id = 'welcome-overlay';
+        overlay.style.cssText = `
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.6);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 999999;
+            padding: 20px;
+        `;
+
+        const banner = document.createElement('div');
+        banner.style.cssText = `
             background: linear-gradient(135deg, #1C2C5B 0%, #6CABDD 100%);
             color: white;
-            padding: 20px;
-            z-index: 99999;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            padding: 40px;
+            border-radius: 24px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+            animation: popIn 0.3s ease;
         `;
 
         const savedTime = new Date(session.savedAt);
         const timeAgo = this.getTimeAgo(savedTime);
 
         banner.innerHTML = `
-            <div style="max-width: 800px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
-                <div>
-                    <h4 style="margin: 0; font-size: 1.1rem;">👋 Welcome Back! 欢迎回来！</h4>
-                    <p style="margin: 6px 0 0 0; opacity: 0.9; font-size: 0.9rem;">
-                        你在 ${timeAgo} 有未完成的训练计划，要继续吗？
-                    </p>
-                </div>
-                <div style="display: flex; gap: 10px;">
-                    <button id="btn-continue-session" style="
-                        background: white;
-                        color: #1C2C5B;
-                        border: none;
-                        padding: 10px 20px;
-                        border-radius: 10px;
-                        font-weight: 700;
-                        cursor: pointer;
-                    ">
-                        🚀 Continue · 继续
-                    </button>
-                    <button id="btn-start-fresh" style="
-                        background: transparent;
-                        color: white;
-                        border: 2px solid white;
-                        padding: 10px 20px;
-                        border-radius: 10px;
-                        font-weight: 700;
-                        cursor: pointer;
-                    ">
-                        🔄 Start Over · 重新开始
-                    </button>
-                </div>
+            <style>
+                @keyframes popIn {
+                    0% { transform: scale(0.8); opacity: 0; }
+                    100% { transform: scale(1); opacity: 1; }
+                }
+            </style>
+            <div style="font-size: 4rem; margin-bottom: 16px;">🏋️</div>
+            <h2 style="margin: 0 0 12px 0; font-size: 1.8rem;">Welcome Back!</h2>
+            <h3 style="margin: 0 0 20px 0; font-size: 1.4rem; opacity: 0.95;">欢迎回来！</h3>
+            <p style="margin: 0 0 30px 0; font-size: 1.1rem; opacity: 0.9; line-height: 1.6;">
+                你在 ${timeAgo} 设置过训练计划<br>
+                要继续沿用上次的计划吗？
+            </p>
+            <div style="display: flex; flex-direction: column; gap: 14px;">
+                <button id="btn-continue-session" style="
+                    background: white;
+                    color: #1C2C5B;
+                    border: none;
+                    padding: 18px 32px;
+                    border-radius: 16px;
+                    font-weight: 800;
+                    font-size: 1.2rem;
+                    cursor: pointer;
+                    width: 100%;
+                    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+                ">
+                    🚀 继续上次的训练计划
+                </button>
+                <button id="btn-start-fresh" style="
+                    background: rgba(255,255,255,0.15);
+                    color: white;
+                    border: 2px solid rgba(255,255,255,0.4);
+                    padding: 16px 32px;
+                    border-radius: 16px;
+                    font-weight: 700;
+                    font-size: 1.05rem;
+                    cursor: pointer;
+                    width: 100%;
+                ">
+                    🔄 重新设置新计划
+                </button>
             </div>
         `;
 
-        document.body.prepend(banner);
+        overlay.appendChild(banner);
+
+        document.body.appendChild(overlay);
 
         // 绑定事件
         document.getElementById('btn-continue-session').addEventListener('click', () => {
             this.restoreLastSession();
-            banner.remove();
+            overlay.remove();
         });
 
         document.getElementById('btn-start-fresh').addEventListener('click', () => {
             DataStore.clearLastSession();
-            banner.remove();
+            overlay.remove();
             this.showNotification('🆕 已清除历史记录', 'info');
         });
     },

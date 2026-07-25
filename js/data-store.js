@@ -72,10 +72,7 @@ const DataStore = {
      * 保存训练计划
      */
     saveTrainingPlan(plan) {
-        return this.save(this.KEYS.TRAINING_PLAN, {
-            ...plan,
-            createdAt: new Date().toISOString()
-        });
+        return this.save(this.KEYS.TRAINING_PLAN, plan);
     },
 
     /**
